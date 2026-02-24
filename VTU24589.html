@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Applyfolio – Internship Platform</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins
+}
+
+body{
+    background:linear-gradient(135deg,#F8FAFC,#EEF2FF);
+    color:#334155
+}
+
+/* NAVBAR */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:white;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05)
+}
+
+.logo{
+    font-size:30px;
+    font-weight:700;
+    background:linear-gradient(90deg,#14B8A6,#8B5CF6);
+    -webkit-background-clip:text;
+    color:transparent
+}
+
+/* MENU */
+.menu{
+    display:flex;
+    gap:30px;
+    align-items:center
+}
+
+.menu a{
+    text-decoration:none;
+    font-weight:500;
+    color:#334155;
+    cursor:pointer;
+    position:relative
+}
+
+.menu a:hover{
+    color:#14B8A6
+}
+
+/* DROPDOWN */
+.dropdown{
+    position:relative
+}
+
+.dropdown-btn{
+    font-weight:500;
+    cursor:pointer
+}
+
+.dropdown-content{
+    position:absolute;
+    top:40px;
+    right:0;
+    background:white;
+    border-radius:14px;
+    min-width:180px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.15);
+    display:none;
+    overflow:hidden
+}
+
+.dropdown-content a{
+    display:block;
+    padding:12px 18px;
+    margin:0;
+    font-size:14px
+}
+
+.dropdown-content a:hover{
+    background:#F1F5F9;
+    color:#14B8A6
+}
+
+.dropdown:hover .dropdown-content{
+    display:block
+}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:140px 40px 100px
+}
+
+.hero h1{
+    font-size:52px;
+    line-height:1.2
+}
+
+.hero span{
+    color:#14B8A6
+}
+
+.hero p{
+    margin-top:14px;
+    font-size:18px;
+    color:#64748B
+}
+
+/* FEATURES */
+.features{
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px
+}
+
+.feature{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    transition:0.3s
+}
+
+.feature:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 35px rgba(0,0,0,0.15)
+}
+
+.feature h3{
+    margin-top:15px
+}
+
+.feature p{
+    margin-top:10px;
+    color:#64748B
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:25px;
+    background:#020617;
+    color:#CBD5E1;
+    margin-top:80px
+}
+
+@media(max-width:768px){
+    .hero h1{font-size:38px}
+    .menu{gap:15px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">Applyfolio</div>
+
+    <div class="menu">
+        <a>Home</a>
+        <a>Features</a>
+        <a>About</a>
+
+        <div class="dropdown">
+            <span class="dropdown-btn">Menu ▾</span>
+            <div class="dropdown-content">
+                <a>Dashboard</a>
+                <a>Login</a>
+                <a>Signup</a>
+                <a>Profile</a>
+                <a>Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>
+        Build Your Internship Profile<br>
+        <span>All in One Place ✨</span>
+    </h1>
+    <p>Apply, track, and showcase your skills professionally.</p>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h1>🗂️</h1>
+        <h3>Application Tracking</h3>
+        <p>Manage all internship applications from one dashboard.</p>
+    </div>
+
+    <div class="feature">
+        <h1>🎨</h1>
+        <h3>Portfolio Builder</h3>
+        <p>Present your projects, skills and certifications.</p>
+    </div>
+
+    <div class="feature">
+        <h1>🤝</h1>
+        <h3>Student Connect</h3>
+        <p>Get noticed by companies actively hiring interns.</p>
+    </div>
+</section>
+
+<footer>
+    © 2026 Applyfolio • Internship Application & Portfolio Platform
+</footer>
+
+</body>
+</html>
