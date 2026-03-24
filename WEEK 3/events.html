@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keyboard & Mouse Events</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      overflow: hidden; /* prevent scrollbars during movement */
+      height: 100vh;
+    }
+
+    /* ---- Tab switcher ---- */
+    .tabs {
+      display: flex;
+      background: #1a1a2e;
+      padding: 0 24px;
+    }
+
+    .tab-btn {
+      padding: 14px 24px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 15px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: white;
+      border-bottom: 3px solid #e67e22;
+    }
+
+    /* ---- Panels ---- */
+    .panel {
+      display: none;
+      height: calc(100vh - 50px);
+      position: relative;
+    }
+
+    .panel.active { display: block; }
+
+    /* ============================================================
+       PROBLEM 1 — Keyboard movement
+    ============================================================ */
+    #panel1 {
+      background: #1a1a2e;
+      overflow: hidden;
+    }
+
+    /* HUD info bar at top */
+    .hud {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.5);
+      padding: 10px 20px;
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      color: #aaa;
+      z-index: 10;
+    }
+
+    .hud span { color: white; }
+
+    /* Shape toggle buttons */
+    .shape-btns {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .shape-btn {
+      padding: 10px 22px;
+      border: 2px solid white;
+      background: transparent;
+      color: white;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .shape-btn.active { background: #e67e22; border-color: #e67e22; }
+
+    /* The moving square */
+    #movableBox {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: #e67e22;
+      border-radius: 8px;
+      top: 200px;
+      left: 300px;
+      transition: top 0.08s, left 0.08s; /* smooth movement */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 0 20px rgba(230,126,34,0.6);
+    }
+
+    /* Circle variant */
+    #movableBox.circle { border-radius: 50%; }
+
+    /* Arrow key guide */
+    .key-guide {
+      position: absolute;
+      bottom: 70px;
+      right: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 36px);
+      grid-template-rows: repeat(2, 36px);
+      gap: 4px;
+      z-index: 10;
+    }
+
+    .key {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      transition: background 0.1s;
+    }
+
+    .key.pressed { background: #e67e22; }
+    .key.empty   { background: transparent; border: none; }
+
+    /* Trail dots */
+    .trail {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(230,126,34,0.4);
+      pointer-events: none;
+      transition: opacity 1s;
+    }
+
+    /* ============================================================
+       PROBLEM 2 — Mouse quadrant tracking
+    ============================================================ */
+    #panel2 {
+      background: #ecf0f1;
+      transition: background-color 0.4s ease; /* smooth color change */
+    }
+
+    /* Big coordinate display */
+    .coord-display {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    /* Quadrant label shown at center */
+    .quadrant-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 72px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.15);
+      pointer-events: none;
+      transition: opacity 0.3s;
+      user-select: none;
+    }
+
+    /* Crosshair lines at center */
+    .crosshair-h {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    .crosshair-v {
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* Corner labels */
+    .corner-label {
+      position: absolute;
+      font-size: 13px;
+      color: rgba(0,0,0,0.3);
+      padding: 8px;
+    }
+
+    /* Mouse cursor dot */
+    #mouseDot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #1a1a2e;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: left 0.05s, top 0.05s;
+      z-index: 10;
+    }
+
+    /* Info panel bottom */
+    .mouse-info {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .mouse-info table { border-collapse: collapse; }
+    .mouse-info td { padding: 4px 16px; }
+    .mouse-info td:first-child { color: #aaa; }
+  </style>
+</head>
+<body>
+
+  <!-- Tab switcher -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">Problem 1 — Keyboard Movement</button>
+    <button class="tab-btn"       onclick="switchTab(2)">Problem 2 — Mouse Quadrants</button>
+  </div>
+
+  <!-- =============================================
+       PANEL 1: Keyboard movement
+  ============================================= -->
+  <div id="panel1" class="panel active">
+
+    <!-- HUD -->
+    <div class="hud">
+      <div>Position: X=<span id="posX">300</span> Y=<span id="posY">200</span></div>
+      <div>Speed: <span id="speed">10</span>px</div>
+      <div>Moves: <span id="moves">0</span></div>
+      <div style="color:#aaa">Use arrow keys ↑ ↓ ← → to move</div>
+    </div>
+
+    <!-- The movable shape -->
+    <div id="movableBox">🔶</div>
+
+    <!-- Arrow key visual indicator -->
+    <div class="key-guide">
+      <div class="key empty"></div>
+      <div class="key" id="keyUp">↑</div>
+      <div class="key empty"></div>
+      <div class="key" id="keyLeft">←</div>
+      <div class="key" id="keyDown">↓</div>
+      <div class="key" id="keyRight">→</div>
+    </div>
+
+    <!-- Shape + speed controls -->
+    <div class="shape-btns">
+      <button class="shape-btn active" onclick="setShape('square')">■ Square</button>
+      <button class="shape-btn"        onclick="setShape('circle')">● Circle</button>
+      <button class="shape-btn"        onclick="clearTrail()">Clear Trail</button>
+      <button class="shape-btn"        onclick="resetPosition()">Reset</button>
+    </div>
+
+  </div>
+
+  <!-- =============================================
+       PANEL 2: Mouse quadrant tracking
+  ============================================= -->
+  <div id="panel2" class="panel">
+
+    <!-- Crosshair dividers -->
+    <div class="crosshair-h"></div>
+    <div class="crosshair-v"></div>
+
+    <!-- Corner labels -->
+    <div class="corner-label" style="top:60px; left:10px">Q1 — Top Left</div>
+    <div class="corner-label" style="top:60px; right:10px">Q2 — Top Right</div>
+    <div class="corner-label" style="bottom:60px; left:10px">Q3 — Bottom Left</div>
+    <div class="corner-label" style="bottom:60px; right:10px">Q4 — Bottom Right</div>
+
+    <!-- Big quadrant label -->
+    <div class="quadrant-label" id="quadrantLabel">—</div>
+
+    <!-- Mouse dot that follows cursor -->
+    <div id="mouseDot"></div>
+
+    <!-- Coordinate display -->
+    <div class="coord-display" id="coordDisplay">
+      Move your mouse to see coordinates
+    </div>
+
+    <!-- Info panel -->
+    <div class="mouse-info">
+      <table>
+        <tr>
+          <td>Quadrant</td>
+          <td id="quadInfo">—</td>
+        </tr>
+        <tr>
+          <td>Coordinates</td>
+          <td id="coordInfo">x: — , y: —</td>
+        </tr>
+        <tr>
+          <td>Background</td>
+          <td id="colorInfo">—</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+
+<script>
+  // =============================================
+  // TAB SWITCHING
+  // =============================================
+  function switchTab(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel' + n).classList.add('active');
+    document.querySelectorAll('.tab-btn')[n - 1].classList.add('active');
+  }
+
+
+  // =============================================
+  // PROBLEM 1: Keyboard Movement
+  // =============================================
+
+  const box   = document.getElementById('movableBox');
+  let posX    = 300; // current X position
+  let posY    = 200; // current Y position
+  const STEP  = 10;  // pixels moved per keypress
+  let moveCount = 0;
+
+  // Listen for keydown event on the whole document
+  document.addEventListener('keydown', function(event) {
+
+    // Only handle arrow keys, and only when Panel 1 is active
+    if (!document.getElementById('panel1').classList.contains('active')) return;
+
+    // Prevent page from scrolling when arrow keys are pressed
+    if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+    }
+
+    // Get current panel boundaries so box stays inside
+    const panelH = window.innerHeight - 50; // minus tab bar
+    const panelW = window.innerWidth;
+    const boxSize = 60;
+
+    // Store old position for trail
+    const oldX = posX;
+    const oldY = posY;
+
+    // Move based on which key was pressed
+    switch (event.key) {
+      case 'ArrowUp':
+        posY = Math.max(50, posY - STEP); // 50 = HUD height
+        highlightKey('keyUp');
+        break;
+      case 'ArrowDown':
+        posY = Math.min(panelH - boxSize, posY + STEP);
+        highlightKey('keyDown');
+        break;
+      case 'ArrowLeft':
+        posX = Math.max(0, posX - STEP);
+        highlightKey('keyLeft');
+        break;
+      case 'ArrowRight':
+        posX = Math.min(panelW - boxSize, posX + STEP);
+        highlightKey('keyRight');
+        break;
+    }
+
+    // Apply new position to the box using CSS
+    box.style.left = posX + 'px';
+    box.style.top  = posY + 'px';
+
+    // Update HUD
+    moveCount++;
+    document.getElementById('posX').textContent  = posX;
+    document.getElementById('posY').textContent  = posY;
+    document.getElementById('moves').textContent = moveCount;
+
+    // Draw a trail dot at old position
+    addTrailDot(oldX, oldY);
+  });
+
+  // Flash the key indicator orange when pressed
+  function highlightKey(id) {
+    const key = document.getElementById(id);
+    key.classList.add('pressed');
+    setTimeout(() => key.classList.remove('pressed'), 150);
+  }
+
+  // Add a small dot at the previous position (trail effect)
+  function addTrailDot(x, y) {
+    const dot = document.createElement('div');
+    dot.className = 'trail';
+    dot.style.left = (x + 26) + 'px'; // center of box
+    dot.style.top  = (y + 26) + 'px';
+    document.getElementById('panel1').appendChild(dot);
+
+    // Fade out and remove after 2 seconds
+    setTimeout(() => { dot.style.opacity = '0'; }, 500);
+    setTimeout(() => { dot.remove(); }, 1500);
+  }
+
+  function clearTrail() {
+    document.querySelectorAll('.trail').forEach(d => d.remove());
+  }
+
+  function resetPosition() {
+    posX = 300; posY = 200; moveCount = 0;
+    box.style.left = posX + 'px';
+    box.style.top  = posY + 'px';
+    document.getElementById('posX').textContent  = posX;
+    document.getElementById('posY').textContent  = posY;
+    document.getElementById('moves').textContent = 0;
+    clearTrail();
+  }
+
+  function setShape(shape) {
+    document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    if (shape === 'circle') {
+      box.classList.add('circle');
+      box.textContent = '🔴';
+    } else {
+      box.classList.remove('circle');
+      box.textContent = '🔶';
+    }
+  }
+
+
+  // =============================================
+  // PROBLEM 2: Mouse Quadrant Tracking
+  // =============================================
+
+  // Colors for each quadrant
+  const quadrantColors = {
+    'Q1 — Top Left'     : '#2980b9', // blue
+    'Q2 — Top Right'    : '#27ae60', // green
+    'Q3 — Bottom Left'  : '#8e44ad', // purple
+    'Q4 — Bottom Right' : '#c0392b'  // red
+  };
+
+  const panel2   = document.getElementById('panel2');
+  const mouseDot = document.getElementById('mouseDot');
+
+  // Listen for mouse movement across the entire document
+  document.addEventListener('mousemove', function(event) {
+
+    // Only track when Panel 2 is active
+    if (!panel2.classList.contains('active')) return;
+
+    // Get mouse coordinates
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // Move the dot to follow cursor
+    mouseDot.style.left = x + 'px';
+    mouseDot.style.top  = y + 'px';
+
+    // Get center of screen
+    const halfW = window.innerWidth  / 2;
+    const halfH = (window.innerHeight - 50) / 2 + 50; // account for tab bar
+
+    // Determine which quadrant the mouse is in
+    let quadrant;
+
+    if (x < halfW && y < halfH) {
+      quadrant = 'Q1 — Top Left';
+    } else if (x >= halfW && y < halfH) {
+      quadrant = 'Q2 — Top Right';
+    } else if (x < halfW && y >= halfH) {
+      quadrant = 'Q3 — Bottom Left';
+    } else {
+      quadrant = 'Q4 — Bottom Right';
+    }
+
+    // Apply background color based on quadrant
+    const color = quadrantColors[quadrant];
+    panel2.style.backgroundColor = color;
+
+    // Update all displays
+    document.getElementById('coordDisplay').textContent =
+      `X: ${x}px  |  Y: ${y}px  |  ${quadrant}`;
+
+    document.getElementById('quadrantLabel').textContent =
+      quadrant.split(' — ')[0]; // just "Q1", "Q2" etc.
+
+    document.getElementById('quadInfo').textContent   = quadrant;
+    document.getElementById('coordInfo').textContent  = `x: ${x} , y: ${y}`;
+    document.getElementById('colorInfo').textContent  = color;
+  });
+
+</script>
+
+</body>
+</html>

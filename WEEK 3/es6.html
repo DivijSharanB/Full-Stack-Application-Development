@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ES6 Features</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 32px 16px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1a1a2e;
+      margin-bottom: 32px;
+      font-size: 26px;
+    }
+
+    /* Each problem in its own card */
+    .problem-card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 700px;
+      margin: 0 auto 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .problem-card h2 {
+      font-size: 18px;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .problem-card p.desc {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    /* Score display */
+    .score-board {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .team-score {
+      flex: 1;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .team-score span {
+      display: block;
+      font-size: 36px;
+      font-weight: bold;
+      color: #1a1a2e;
+    }
+
+    .team-score label { font-size: 13px; color: #888; }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #1a1a2e;
+      color: white;
+    }
+
+    button:hover { background: #2c3e50; }
+
+    .btn-red   { background: #e74c3c; }
+    .btn-red:hover { background: #c0392b; }
+
+    /* Output boxes */
+    .output {
+      background: #1a1a2e;
+      color: #2ecc71;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-top: 14px;
+      min-height: 48px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    /* Receipt specific */
+    .receipt-inputs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .receipt-inputs input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      min-width: 120px;
+    }
+
+    /* Party list display */
+    .party-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .party-tag {
+      background: #1a1a2e;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .party-tag.me { background: #e67e22; }
+
+    /* Pizza order */
+    .pizza-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      font-size: 15px;
+    }
+
+    .status-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ccc;
+    }
+
+    .status-dot.pending  { background: #f39c12; }
+    .status-dot.success  { background: #2ecc71; }
+    .status-dot.failed   { background: #e74c3c; }
+  </style>
+</head>
+<body>
+
+<h1>ES6 JavaScript Features</h1>
+
+<!-- =============================================
+     PROBLEM 1: let & const — Score Tracker
+============================================= -->
+<div class="problem-card">
+  <h2>Problem 1 — let &amp; const: Match Score Tracker</h2>
+  <p class="desc">Uses block-scoped variables to track team scores. const for team names, let for scores.</p>
+
+  <div class="score-board">
+    <div class="team-score">
+      <label>Team A</label>
+      <span id="scoreA">0</span>
+    </div>
+    <div class="team-score">
+      <label>Team B</label>
+      <span id="scoreB">0</span>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button onclick="addScore('A')">+1 Team A</button>
+    <button onclick="addScore('B')">+1 Team B</button>
+    <button class="btn-red" onclick="resetScores()">Reset</button>
+  </div>
+
+  <div class="output" id="scoreLog">Score updated here...</div>
+</div>
+
+<!-- =============================================
+     PROBLEM 2: Arrow Function — Receipt Generator
+============================================= -->
+<div class="problem-card">
+  <h2>Problem 2 — Arrow Function: Receipt Generator</h2>
+  <p class="desc">Arrow function <code>generateReceipt</code> takes price and tip, calculates total using template literals.</p>
+
+  <div class="receipt-inputs">
+    <input type="number" id="priceInput" placeholder="Price (₹)" min="0">
+    <input type="number" id="tipInput"   placeholder="Tip (%)" min="0" max="100">
+  </div>
+
+  <button onclick="showReceipt()">Generate Receipt</button>
+
+  <div class="output" id="receiptOutput">Receipt will appear here...</div>
+</div>
+
+<!-- =============================================
+     PROBLEM 3: Destructuring
+============================================= -->
+<div class="problem-card">
+  <h2>Problem 3 — Destructuring: Object &amp; Array</h2>
+  <p class="desc">Extract properties from objects and elements from arrays without dot notation or index numbers.</p>
+
+  <div class="btn-row">
+    <button onclick="showObjectDestructuring()">Object Destructuring</button>
+    <button onclick="showArrayDestructuring()">Array Destructuring</button>
+  </div>
+
+  <div class="output" id="destructureOutput">Click a button to see destructuring in action...</div>
+</div>
+
+<!-- =============================================
+     PROBLEM 4: Spread & Rest — Party List
+============================================= -->
+<div class="problem-card">
+  <h2>Problem 4 — Spread &amp; Rest: Party List</h2>
+  <p class="desc">Merge friend lists using spread operator, add "Me" at start, and use rest parameters.</p>
+
+  <button onclick="buildPartyList()">Build Party List</button>
+
+  <div id="partyDisplay" class="party-list"></div>
+
+  <div class="output" id="restOutput" style="margin-top:14px">Rest operator demo will appear here...</div>
+</div>
+
+<!-- =============================================
+     PROBLEM 5: Promise — Pizza Ordering System
+============================================= -->
+<div class="problem-card">
+  <h2>Problem 5 — Promise: Pizza Ordering System</h2>
+  <p class="desc">Simulates an async pizza order — sometimes succeeds, sometimes fails (randomly).</p>
+
+  <button onclick="orderPizza()">Place Order 🍕</button>
+
+  <div class="pizza-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="pizzaStatus">No order placed yet</span>
+  </div>
+
+  <div class="output" id="pizzaOutput">Order details will appear here...</div>
+</div>
+
+
+<script>
+  // =============================================
+  // PROBLEM 1: let & const
+  // =============================================
+
+  // const = team names never change
+  const TEAM_A = "Team A";
+  const TEAM_B = "Team B";
+
+  // let = scores change throughout the game
+  let scoreA = 0;
+  let scoreB = 0;
+
+  function addScore(team) {
+    // Block-scoped: these variables only exist inside this if/else block
+    if (team === 'A') {
+      scoreA += 1; // let variable being updated
+      document.getElementById('scoreA').textContent = scoreA;
+    } else {
+      scoreB += 1;
+      document.getElementById('scoreB').textContent = scoreB;
+    }
+
+    // Template literal: embed variables directly into string
+    const log = `${TEAM_A}: ${scoreA} | ${TEAM_B}: ${scoreB}`;
+    document.getElementById('scoreLog').textContent = log;
+  }
+
+  function resetScores() {
+    scoreA = 0; // let can be reassigned
+    scoreB = 0;
+    document.getElementById('scoreA').textContent = 0;
+    document.getElementById('scoreB').textContent = 0;
+    document.getElementById('scoreLog').textContent = 'Scores reset!';
+  }
+
+
+  // =============================================
+  // PROBLEM 2: Arrow function + Template Literals
+  // =============================================
+
+  // Arrow function: const name = (params) => { body }
+  const generateReceipt = (price, tipPercent) => {
+    const tipAmount = (price * tipPercent) / 100;
+    const total     = price + tipAmount;
+
+    // Template literal with \n for new lines
+    return `--- RECEIPT ---
+Item price : ₹${price.toFixed(2)}
+Tip (${tipPercent}%)  : ₹${tipAmount.toFixed(2)}
+Total      : ₹${total.toFixed(2)}
+---------------`;
+  };
+
+  function showReceipt() {
+    const price = parseFloat(document.getElementById('priceInput').value);
+    const tip   = parseFloat(document.getElementById('tipInput').value);
+
+    if (isNaN(price) || isNaN(tip)) {
+      document.getElementById('receiptOutput').textContent = 'Please enter valid price and tip values.';
+      return;
+    }
+
+    document.getElementById('receiptOutput').textContent = generateReceipt(price, tip);
+  }
+
+
+  // =============================================
+  // PROBLEM 3: Destructuring
+  // =============================================
+
+  function showObjectDestructuring() {
+    const student = {
+      name    : "Ravi Kumar",
+      age     : 20,
+      course  : "Computer Science",
+      grade   : "A",
+      college : "Vel Tech"
+    };
+
+    // Object destructuring: pull out named properties
+    // No need for student.name, student.age etc.
+    const { name, age, course, grade } = student;
+
+    document.getElementById('destructureOutput').textContent =
+`Object Destructuring:
+Original object: student.name, student.age...
+
+const { name, age, course, grade } = student;
+
+name   → ${name}
+age    → ${age}
+course → ${course}
+grade  → ${grade}`;
+  }
+
+  function showArrayDestructuring() {
+    const topLanguages = ["JavaScript", "Python", "Java", "C++", "TypeScript"];
+
+    // Array destructuring: pull by position
+    // No need for topLanguages[0], topLanguages[1] etc.
+    const [first, second, third] = topLanguages;
+
+    document.getElementById('destructureOutput').textContent =
+`Array Destructuring:
+Original: ["JavaScript","Python","Java","C++","TypeScript"]
+
+const [first, second, third] = topLanguages;
+
+first  → ${first}
+second → ${second}
+third  → ${third}`;
+  }
+
+
+  // =============================================
+  // PROBLEM 4: Spread & Rest
+  // =============================================
+
+  function buildPartyList() {
+    const collegeFriends = ["Arun", "Priya", "Karthik", "Divya"];
+    const workFriends    = ["Rahul", "Sneha", "Vikram"];
+
+    // Spread operator (...) merges two arrays into one
+    // "Me" is added at the very start using unshift logic inline
+    const partyList = ["Me", ...collegeFriends, ...workFriends];
+
+    // Display as tags
+    const container = document.getElementById('partyDisplay');
+    container.innerHTML = '';
+
+    partyList.forEach(name => {
+      const tag = document.createElement('div');
+      tag.className = name === "Me" ? "party-tag me" : "party-tag";
+      tag.textContent = name;
+      container.appendChild(tag);
+    });
+
+    // Rest operator demo
+    // first = first friend, ...rest = everyone else collected into array
+    const restDemo = (first, ...rest) => {
+      return `First guest: ${first}\nOther guests (rest): ${rest.join(', ')}`;
+    };
+
+    document.getElementById('restOutput').textContent =
+      `Party list: ${partyList.join(', ')}\n\n` + restDemo(...partyList);
+  }
+
+
+  // =============================================
+  // PROBLEM 5: Promise — Pizza Ordering
+  // =============================================
+
+  function orderPizza() {
+    const dot    = document.getElementById('statusDot');
+    const status = document.getElementById('pizzaStatus');
+    const output = document.getElementById('pizzaOutput');
+
+    // Reset UI
+    dot.className    = 'status-dot pending';
+    status.textContent = 'Order placed... waiting for kitchen 🍳';
+    output.textContent = 'Processing your order...';
+
+    // Promise simulates an async operation (like a server call)
+    const pizzaOrder = new Promise((resolve, reject) => {
+      // setTimeout simulates a delay (like a network request)
+      setTimeout(() => {
+        // Math.random() gives 0 to 1 — 70% chance of success
+        const success = Math.random() > 0.3;
+
+        if (success) {
+          resolve({
+            orderId   : Math.floor(Math.random() * 9000 + 1000),
+            pizza     : "Margherita",
+            size      : "Large",
+            deliveryIn: "30 minutes"
+          });
+        } else {
+          reject("Sorry! All pizzas are sold out. Try again!");
+        }
+      }, 2000); // 2 second delay
+    });
+
+    // .then() runs when resolve() is called (success)
+    pizzaOrder
+      .then(order => {
+        dot.className      = 'status-dot success';
+        status.textContent = 'Order confirmed! ✅';
+        output.textContent =
+`Order Confirmed!
+Order ID  : #${order.orderId}
+Pizza     : ${order.pizza} (${order.size})
+Delivery  : ${order.deliveryIn}`;
+      })
+      // .catch() runs when reject() is called (failure)
+      .catch(error => {
+        dot.className      = 'status-dot failed';
+        status.textContent = 'Order failed ❌';
+        output.textContent = `Error: ${error}`;
+      });
+  }
+
+</script>
+
+</body>
+</html>

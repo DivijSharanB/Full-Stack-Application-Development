@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Layout Templates</title>
+  <style>
+    /* Reset browser default spacing */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: Arial, sans-serif; }
+
+    /* ---- GRID LAYOUT ---- */
+    .grid-layout {
+      display: grid;
+      grid-template-areas:
+        "header header"
+        "nav    nav"
+        "main   sidebar"
+        "footer footer";
+      grid-template-columns: 3fr 1fr; /* main gets 3 parts, sidebar gets 1 */
+      min-height: 100vh;
+    }
+
+    header  { grid-area: header;  background: #2c3e50; color: white; padding: 20px; }
+    nav     { grid-area: nav;     background: #34495e; color: white; padding: 10px; }
+    main    { grid-area: main;    background: #ecf0f1; padding: 20px; }
+    aside   { grid-area: sidebar; background: #bdc3c7; padding: 20px; }
+    footer  { grid-area: footer;  background: #2c3e50; color: white; padding: 15px; text-align: center; }
+
+    nav a { color: white; margin-right: 20px; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="grid-layout">
+
+    <header>
+      <h1>My Website</h1>
+      <p>Welcome to my homepage</p>
+    </header>
+
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <main>
+      <section>
+        <h2>Latest Articles</h2>
+        <article>
+          <h3>First Article Title</h3>
+          <p>This is a self-contained piece of content. An article tag is used
+             for things that make sense on their own — like a blog post.</p>
+        </article>
+        <article>
+          <h3>Second Article Title</h3>
+          <p>Another standalone article. Notice how we nest article inside
+             section. Section groups related content together.</p>
+        </article>
+      </section>
+    </main>
+
+    <aside>
+      <h3>Related Links</h3>
+      <ul>
+        <li><a href="#">Link one</a></li>
+        <li><a href="#">Link two</a></li>
+        <li><a href="#">Link three</a></li>
+      </ul>
+    </aside>
+
+    <footer>
+      <p>&copy; 2025 My Website. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

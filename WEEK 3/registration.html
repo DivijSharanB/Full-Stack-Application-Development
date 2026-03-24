@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tantraz Registration</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 40px 16px;
+    }
+
+    .form-card {
+      background: white;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 12px;
+      padding: 36px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .form-card h1 {
+      font-size: 24px;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .form-card p.subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 28px;
+    }
+
+    /* Section headings inside form */
+    .section-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 24px 0 12px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+
+    /* Field wrapper */
+    .field {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    /* Required star */
+    .required-star { color: #e74c3c; margin-left: 2px; }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field select,
+    .field textarea {
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #1a1a2e;
+    }
+
+    /* Radio and checkbox groups */
+    .options-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .options-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: normal;
+      color: #333;
+    }
+
+    /* Character counter for textarea */
+    .char-count {
+      font-size: 12px;
+      color: #888;
+      text-align: right;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 24px;
+    }
+
+    .submit-btn:hover { background: #2c3e50; }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    <h1>Tantraz 2025</h1>
+    <p class="subtitle">Fill in the details below to register for the event.</p>
+
+    <form action="#" method="post" aria-label="Tantraz registration form">
+
+      <!-- ---- Personal Info ---- -->
+      <p class="section-title">Personal Information</p>
+
+      <!-- Full name: text input, required -->
+      <div class="field">
+        <label for="fullname">
+          Full name <span class="required-star">*</span>
+        </label>
+        <input
+          type="text"
+          id="fullname"
+          name="fullname"
+          placeholder="Enter your full name"
+          aria-label="Full name"
+          required>
+      </div>
+
+      <!-- Email: type="email" gives automatic format validation -->
+      <div class="field">
+        <label for="email">
+          Email address <span class="required-star">*</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          aria-label="Email address"
+          required>
+      </div>
+
+      <!-- ---- Event Details ---- -->
+      <p class="section-title">Event Details</p>
+
+      <!-- Participation category: dropdown, required -->
+      <div class="field">
+        <label for="category">
+          Participation category <span class="required-star">*</span>
+        </label>
+        <!--
+          <select> = dropdown
+          Each <option> is one choice
+          required = must pick something other than the blank default
+        -->
+        <select id="category" name="category" aria-label="Participation category" required>
+          <option value="">-- Select a category --</option>
+          <option value="individual">Individual</option>
+          <option value="team">Team</option>
+          <option value="audience">Audience</option>
+        </select>
+      </div>
+
+      <!-- T-shirt size: radio buttons (pick only ONE) -->
+      <div class="field">
+        <label>T-shirt size</label>
+        <div class="options-group" role="group" aria-label="T-shirt size">
+          <!--
+            All radio inputs share the same name="tshirt"
+            so only one can be selected at a time
+          -->
+          <label><input type="radio" name="tshirt" value="S"> S</label>
+          <label><input type="radio" name="tshirt" value="M" checked> M</label>
+          <label><input type="radio" name="tshirt" value="L"> L</label>
+          <label><input type="radio" name="tshirt" value="XL"> XL</label>
+        </div>
+      </div>
+
+      <!-- Technical interests: checkboxes (pick MANY) -->
+      <div class="field">
+        <label>Technical interests</label>
+        <div class="options-group" role="group" aria-label="Technical interests">
+          <!--
+            Checkboxes with different name values
+            Multiple can be ticked at the same time
+          -->
+          <label>
+            <input type="checkbox" name="interest" value="ai"> AI
+          </label>
+          <label>
+            <input type="checkbox" name="interest" value="webdev"> Web Dev
+          </label>
+          <label>
+            <input type="checkbox" name="interest" value="cloud"> Cloud Computing
+          </label>
+          <label>
+            <input type="checkbox" name="interest" value="cyber"> Cybersecurity
+          </label>
+          <label>
+            <input type="checkbox" name="interest" value="data"> Data Science
+          </label>
+        </div>
+      </div>
+
+      <!-- ---- Expectations ---- -->
+      <p class="section-title">Your Expectations</p>
+
+      <!--
+        <textarea> = multi-line text box
+        maxlength="200" = cannot type more than 200 characters
+        rows = how tall the box appears
+        oninput = live JS to count remaining characters
+      -->
+      <div class="field">
+        <label for="expectations">Expectations / Suggestions</label>
+        <textarea
+          id="expectations"
+          name="expectations"
+          rows="4"
+          maxlength="200"
+          placeholder="Share what you hope to gain or any suggestions for the event..."
+          aria-label="Your expectations or suggestions"
+          oninput="updateCount(this)"></textarea>
+        <span class="char-count" id="charCount">200 characters remaining</span>
+      </div>
+
+      <button type="submit" class="submit-btn">Register Now</button>
+
+    </form>
+  </div>
+
+  <script>
+    // Updates the character counter below the textarea live as user types
+    function updateCount(textarea) {
+      const remaining = 200 - textarea.value.length;
+      document.getElementById('charCount').textContent = remaining + ' characters remaining';
+    }
+  </script>
+
+</body>
+</html>

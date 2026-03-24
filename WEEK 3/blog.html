@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Blog</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* ---- Page layout ---- */
+    header {
+      background: #1a1a2e;
+      color: white;
+      padding: 24px 40px;
+    }
+
+    header h1 { font-size: 28px; }
+    header p  { font-size: 14px; color: #aaa; margin-top: 4px; }
+
+    nav {
+      background: #16213e;
+      padding: 12px 40px;
+    }
+
+    nav a {
+      color: #e0e0e0;
+      margin-right: 24px;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    nav a:hover { color: #fff; }
+
+    .page-wrapper {
+      display: grid;
+      grid-template-columns: 2fr 1fr; /* blog posts | sidebar */
+      gap: 24px;
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    /* ---- Blog articles ---- */
+    article {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    article h2 { font-size: 22px; margin-bottom: 8px; }
+
+    article time {
+      font-size: 13px;
+      color: #888;
+      font-family: Arial, sans-serif;
+    }
+
+    article p {
+      margin-top: 12px;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ---- Media ---- */
+    figure {
+      margin: 20px 0;
+      background: #000;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    figure video,
+    figure audio {
+      display: block;
+      width: 100%;
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: #aaa;
+      padding: 8px 12px;
+      font-family: Arial, sans-serif;
+      background: #111;
+    }
+
+    /* ---- Sidebar ---- */
+    aside {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      height: fit-content;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    aside h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #1a1a2e;
+      padding-bottom: 8px;
+    }
+
+    aside ul { list-style: none; }
+
+    aside ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    footer {
+      background: #1a1a2e;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>TechBlog</h1>
+    <p>Articles, videos, and podcasts on technology</p>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Videos</a>
+    <a href="#">Podcasts</a>
+    <a href="#">About</a>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- Left: Blog posts -->
+    <section>
+
+      <!-- Article 1: with video -->
+      <article>
+        <h2>Introduction to HTML5</h2>
+        <time datetime="2025-01-10">January 10, 2025</time>
+        <p>
+          HTML5 brought powerful new semantic tags and native media support.
+          Watch the short video below to see how a modern webpage is structured.
+        </p>
+
+        <!-- figure wraps the media + caption together -->
+        <figure>
+          <!--
+            src="..." → put a real .mp4 file path here to test
+            controls  → shows play/pause/volume bar
+            poster="..." → thumbnail image shown before play
+          -->
+          <video
+            src="sample-video.mp4"
+            controls
+            poster="https://via.placeholder.com/800x400?text=Video+Thumbnail"
+            width="100%">
+            <!-- Fallback text if browser can't play video -->
+            Your browser does not support the video tag.
+          </video>
+          <figcaption>Video: HTML5 page structure explained (2 mins)</figcaption>
+        </figure>
+
+        <p>
+          After watching, try building your own layout using the semantic
+          tags shown — header, nav, main, article, aside, and footer.
+        </p>
+      </article>
+
+      <!-- Article 2: with audio (podcast style) -->
+      <article>
+        <h2>Podcast: The Future of Web Development</h2>
+        <time datetime="2025-01-15">January 15, 2025</time>
+        <p>
+          In this episode we discuss where web technologies are heading
+          in 2025 — from WebAssembly to AI-powered tools.
+        </p>
+
+        <figure>
+          <!--
+            controls → shows play/pause/timeline
+            loop     → restarts automatically when finished
+          -->
+          <audio
+            src="sample-audio.mp3"
+            controls
+            loop>
+            Your browser does not support the audio tag.
+          </audio>
+          <figcaption>Episode 12 — Runtime: 45 minutes</figcaption>
+        </figure>
+
+        <p>
+          Subscribe to get notified when new episodes drop every Friday.
+        </p>
+      </article>
+
+      <!-- Article 3: text only -->
+      <article>
+        <h2>Why Semantic HTML Matters</h2>
+        <time datetime="2025-01-20">January 20, 2025</time>
+        <p>
+          Using the right tags helps search engines understand your content,
+          makes your site accessible to screen readers, and keeps your code
+          clean and readable for other developers.
+        </p>
+        <p>
+          Think of semantic tags as labels on filing cabinets — they tell
+          everyone (humans and machines) exactly what's inside.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- Right: Sidebar -->
+    <aside>
+      <h3>Popular Posts</h3>
+      <ul>
+        <li>Getting started with CSS Grid</li>
+        <li>JavaScript for beginners</li>
+        <li>What is an API?</li>
+        <li>How browsers render pages</li>
+      </ul>
+
+      <h3 style="margin-top: 20px;">Categories</h3>
+      <ul>
+        <li>HTML &amp; CSS</li>
+        <li>JavaScript</li>
+        <li>Backend</li>
+        <li>Career Tips</li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2025 TechBlog. Made with HTML5.</p>
+  </footer>
+
+</body>
+</html>

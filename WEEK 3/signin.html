@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign In / Sign Up</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 32px;
+      color: #1a1a2e;
+    }
+
+    /* Wrapper holds both forms side by side */
+    .forms-wrapper {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Each form card */
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      width: 360px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .form-card h2 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: #1a1a2e;
+      border-bottom: 2px solid #1a1a2e;
+      padding-bottom: 10px;
+    }
+
+    /* Each label + input pair */
+    .field {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .field input {
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    /* Highlight input when focused */
+    .field input:focus {
+      border-color: #1a1a2e;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover { background: #2c3e50; }
+
+    .form-card p {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-top: 16px;
+    }
+
+    .form-card p a {
+      color: #1a1a2e;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to TechBlog</h1>
+
+  <div class="forms-wrapper">
+
+    <!-- ===== SIGN IN FORM ===== -->
+    <div class="form-card">
+      <h2>Sign In</h2>
+
+      <!--
+        action="#"   → # means stay on same page (no real server)
+        method="post"→ data sent as POST request
+      -->
+      <form action="#" method="post" aria-label="Sign in form">
+
+        <div class="field">
+          <!--
+            for="email-signin" links this label to the input below.
+            When user clicks the label text, the input gets focused.
+          -->
+          <label for="email-signin">Email address</label>
+          <input
+            type="email"
+            id="email-signin"
+            name="email"
+            placeholder="you@example.com"
+            aria-label="Enter your email address"
+            required>
+        </div>
+
+        <div class="field">
+          <label for="password-signin">Password</label>
+          <input
+            type="password"
+            id="password-signin"
+            name="password"
+            placeholder="Enter your password"
+            aria-label="Enter your password"
+            required>
+        </div>
+
+        <button type="submit" class="submit-btn">Sign In</button>
+
+      </form>
+
+      <p>Don't have an account? <a href="#">Sign up</a></p>
+    </div>
+
+    <!-- ===== SIGN UP FORM ===== -->
+    <div class="form-card">
+      <h2>Sign Up</h2>
+
+      <form action="#" method="post" aria-label="Sign up form">
+
+        <div class="field">
+          <label for="fullname">Full name</label>
+          <input
+            type="text"
+            id="fullname"
+            name="fullname"
+            placeholder="John Doe"
+            aria-label="Enter your full name"
+            required>
+        </div>
+
+        <div class="field">
+          <label for="email-signup">Email address</label>
+          <input
+            type="email"
+            id="email-signup"
+            name="email"
+            placeholder="you@example.com"
+            aria-label="Enter your email address"
+            required>
+        </div>
+
+        <div class="field">
+          <label for="password-signup">Password</label>
+          <input
+            type="password"
+            id="password-signup"
+            name="password"
+            placeholder="Create a password"
+            aria-label="Create a password"
+            required
+            minlength="8">
+        </div>
+
+        <div class="field">
+          <label for="confirm-password">Confirm password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm_password"
+            placeholder="Repeat your password"
+            aria-label="Confirm your password"
+            required>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Account</button>
+
+      </form>
+
+      <p>Already have an account? <a href="#">Sign in</a></p>
+    </div>
+
+  </div>
+
+</body>
+</html>
